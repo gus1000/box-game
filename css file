@@ -1,0 +1,8 @@
+<!-- <button class="border">Click me</button> -->
+<h1>Kills <span class="kills"></span></h1>
+<h1>Deaths <span class="deaths"></span></h1>
+<h1>KD <span class="kd-ratio"></span></h1>
+
+
+<button class="start-game"> Start Game</button>
+<button class="pause-game"> Pause Game</button>
