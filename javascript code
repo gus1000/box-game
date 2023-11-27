@@ -1,0 +1,113 @@
+
+console.clear();
+const kills = document.querySelector(".kills");
+const deaths = document.querySelector(".deaths");
+const kdRatio = document.querySelector(".kd-ratio");
+
+
+const startButton = document.querySelector(".start-game");
+const pauseButton = document.querySelector(".pause-game");
+let killsCounter = 0;
+let deathsCounter = 0;
+
+let moves = 100;
+let speed = 2000;
+let size = 100;
+let my_interval;
+let isGameRunning = false;
+
+const box = document.createElement("div");
+
+function updateKDRatio() {
+  
+    kdRatio.innerText = (killsCounter/deathsCounter || 1 ).toFixed(2)
+  
+}
+
+function updateMissedTargets() {
+    deathsCounter++;
+    deaths.innerText = deathsCounter;
+    updateKDRatio();
+    ;
+
+    boxMove();
+
+    changeBoxSize();
+  
+}
+
+function random(number) {
+   return Math.round(Math.random() * number)
+  
+}
+
+function boxMove() {
+  const width = window.innerWidth - size;
+  const height = window.innerHeight - size;
+  const randomX = random(width);
+  const randomY = random(height);
+  box.style.left = `${randomX}px`;
+  box.style.top = `${randomY}px`;
+}
+
+
+
+box.classList.add("box");
+// let my_interval = setInterval(() => {
+//   boxMove();
+//   changeBoxSize();
+// }, speed);
+
+startButton.addEventListener("click", function() {
+  if (isGameRunning === true) return;
+  document.body.appendChild(box)
+
+  isGameRunning = true;
+
+  boxMove();
+
+  my_interval = setInterval( updateMissedTargets, speed);
+});
+
+pauseButton.addEventListener("click" , function() {
+  
+  clearInterval(my_interval);
+  isGameRunning = false; 
+  
+                             
+                             
+  
+  
+  
+})
+
+
+function changeBoxSize() {
+  moves--;
+
+  if (moves === 0) {
+    clearInterval(my_interval);
+  }
+  
+  if( moves % 10 === 0) {
+      size -= 10;
+    box.style.width = `${size}`;
+    box.style.height = `${size}`;
+    }
+
+}
+
+box.addEventListener("click", function (e) {
+  if (isGameRunning === false ) return; //this stops the game
+  killsCounter++;
+  moves--;
+       updateKDRatio()
+;
+  kills.innerText = killsCounter;
+  clearInterval(my_interval);
+  boxMove();
+  if (killsCounter % 10 === 0) {
+    speed -= 300;
+  }
+  my_interval = setInterval(updateMissedTargets , speed);
+});
